@@ -1,13 +1,28 @@
-namespace RoleplayGame
+namespace RoleplayGame;
+using Library;
+
+public class Helmet: IItemsArmadura
 {
-    public class Helmet
+        public string Nombre;
+    public int Defensa;
+    public string Descripcion;
+    public Helmet(string Nombre, int Defensa, string Descripcion)
     {
-        public int DefenseValue
-        {
-            get
-            {
-                return 18;
-            }
-        }
+        this.Nombre=Nombre;
+        this.Defensa=Defensa;
+        this.Descripcion=Descripcion;
+    }
+
+    public int GetDefensa()
+    {
+        return this.Defensa;
+    }
+    public string GetNombre()
+    {
+        return this.Nombre;
+    }
+    public string GetDescripcion()
+    {
+        return this.Descripcion;
     }
 }

@@ -1,59 +1,65 @@
-namespace RoleplayGame
+namespace RoleplayGame;
+using Library;
+using System;
+
+public class Wizard
 {
-    public class Wizard
+        public int CantidadCuracion;
+    public string Nombre {get; set;}
+    public int Salud {get; set;}
+    public int Nivel {get; set;}
+    public int Daño {get; set;}
+    public int XP {get; set;}
+    private string Descripcion {get; set;}
+    public Wizard (string nombre)
+    {   
+        this.Nombre = nombre;
+        this.Salud = 100;
+        this.Daño=10;
+        this.Nivel = 1;
+        this.XP=0;
+        this.Descripcion="Los magos, también conocidos como Istari, tienen el dominio de la mágia, que provee capacidades de ataque y de defensa. La mágia es innata a ellos, aunque pueden adquirir más mediante el estudio de la asignatura, y mediante elementos que la potencian";
+        this.CantidadCuracion=150;
+    }
+    public string SubirNivel()
     {
-        private int health = 100;
-
-        public Wizard(string name)
+        int necesario=100*(Nivel/5+1);
+        if (this.XP >=necesario)
         {
-            this.Name = name;
-        }
-
-        public string Name { get; set; }
-
-        public SpellsBook SpellsBook { get; set; }
-
-        public Staff Staff { get; set; }
-
-        public int AttackValue
-        {
-            get
+            Nivel+=1;
+            this.XP=this.XP-necesario;
+            if (Nivel % 5 !=0)
             {
-                return SpellsBook.AttackValue + Staff.AttackValue;
+                this.Salud=Convert.ToInt16(this.Salud*11);
             }
-        }
-
-        public int DefenseValue
-        {
-            get
+            else
             {
-                return SpellsBook.DefenseValue + Staff.DefenseValue;
+                this.Salud=Convert.ToInt16(this.Salud*1.5);
             }
-        }
 
-        public int Health
-        {
-            get
-            {
-                return this.health;
-            }
-            private set
-            {
-                this.health = value < 0 ? 0 : value;
-            }
+            return ($"{this.Nombre} ha subido a nivel {this.Nivel}");
+            
         }
-
-        public void ReceiveAttack(int power)
-        {
-            if (this.DefenseValue < power)
-            {
-                this.Health -= power - this.DefenseValue;
-            }
-        }
-
-        public void Cure()
-        {
-            this.Health = 100;
-        }
+        return "";
+    }
+    public void Atacar(IPersonaje personaje)
+    {
+       personaje.RecibirDaño(this.Daño);
+    }
+    public void RecibirDaño(int daño)
+    {  
+        Salud-=daño;
+    }
+    public void Curar(IPersonaje personaje)
+    {
+        personaje.RecibirSalud (CantidadCuracion);
+    }
+    public void RecibirSalud(int cantsalud)
+    {
+        Salud+=cantsalud;
+    }
+    public void LeerLibro(SpellsBook libro)
+    {
+        Daño=Convert.ToInt16(Daño*(libro.Nivel/10+1));
     }
 }

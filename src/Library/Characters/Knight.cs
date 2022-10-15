@@ -1,61 +1,65 @@
-namespace RoleplayGame
+namespace RoleplayGame;
+using Library;
+using System;
+
+public class Knight: IPersonaje
 {
-    public class Knight
+    public int CantidadCuracion;
+    public string Nombre {get; set;}
+    public int Salud {get; set;}
+    public int Nivel {get; set;}
+    public int Daño {get; set;}
+    public int XP {get; set;}
+    public string Descripcion {get; set;}
+    
+    public Knight (string nombre)
+    {   
+        this.Nombre = nombre;
+        this.Salud = 1300;
+        this.Daño = 200;
+        this.Nivel = 1;
+        this.XP=0;
+        this.Descripcion="";
+        this.CantidadCuracion=100;
+    }
+    public string SubirNivel()
     {
-        private int health = 100;
-
-        public Knight(string name)
+        int necesario=100*(this.Nivel/5+1);
+        if (this.XP >=necesario)
         {
-            this.Name = name;
-        }
-
-        public string Name { get; set; }
-
-        public Sword Sword { get; set; }
-
-        public Shield Shield { get; set; }
-
-        public Armor Armor { get; set; }
-
-        public int AttackValue
-        {
-            get
+            Nivel+=1;
+            this.XP=this.XP-necesario;
+            if (this.Nivel % 5 !=0)
             {
-                return Sword.AttackValue;
+                this.Daño=Convert.ToInt16(this.Daño*1.1);
+                this.Salud=Convert.ToInt16(this.Salud*1.1);
             }
-        }
-
-        public int DefenseValue
-        {
-            get
+            else
             {
-                return Armor.DefenseValue + Shield.DefenseValue;
+                this.Daño=Convert.ToInt16(this.Daño*1.2);
+                this.Salud=Convert.ToInt16(this.Salud*1.2);
             }
-        }
 
-        public int Health
-        {
-            get
-            {
-                return this.health;
-            }
-            private set
-            {
-                this.health = value < 0 ? 0 : value;
-            }
-        }
 
-        public void ReceiveAttack(int power)
-        {
-            if (this.DefenseValue < power)
-            {
-                this.Health -= power - this.DefenseValue;
-            }
+            return ($"{this.Nombre} ha subido a nivel {this.Nivel}");
+            
         }
-
-        public void Cure()
-        {
-            this.Health = 100;
-        }
+        return "";
+    }
+    public void Atacar(IPersonaje personaje)
+    {
+       personaje.RecibirDaño(Daño);
+    }
+    public void RecibirDaño(int daño)
+    {  
+        Salud-=daño;
+    }
+    public void Curar(IPersonaje personaje)
+    {
+        personaje.RecibirSalud (CantidadCuracion);
+    }
+    public void RecibirSalud(int cantsalud)
+    {
+        Salud+=cantsalud;
     }
 }

@@ -1,13 +1,28 @@
-namespace RoleplayGame
+namespace RoleplayGame;
+using Library;
+
+public class Axe: IItemsArma
 {
-    public class Axe
+    public string GetNombre()
     {
-        public int AttackValue 
-        {
-            get
-            {
-                return 25;
-            } 
-        }
+        return this.Nombre;
+    }
+    public int GetDamage()
+    {
+        return this.Damage;
+    }
+
+    public string GetDescripcion()
+    {
+        return this.Descripcion;
+    }
+    public string Nombre;
+    public int Damage;
+    public string Descripcion;
+    public Axe(string Nombre, int Damage, string Descripcion)
+    {
+        this.Nombre=Nombre;
+        this.Damage=Damage;
+        this.Descripcion=Descripcion;
     }
 }
